@@ -21,7 +21,7 @@ public class GestionEmployes {
     // Méthode pour ajouter un employé au tableau
     public static void ajouterEmploye(Employe emp){
         if (nbEmployes < employes.length){
-            employes[nbEmployes++] = emp;
+            employes[nbEmployes++] = emp; // Ajout de l'employé dans le tableau
             System.out.println("Employe ajouté avec succes!");
         }
         else{
@@ -31,7 +31,7 @@ public class GestionEmployes {
     // Méthode pour modifier les informations d'un employé existant
     public static void modifierEmploye(int id, String nvNom,String nvPoste, double nvSalaire) {
         for (int i = 0; i < nbEmployes; i++) {
-            if (employes[i].getId() == id) {
+            if (employes[i].getId() == id) { // Recherche de l'employé par ID
                 employes[i].setNom(nvNom);
                 employes[i].setPoste(nvPoste);
                 employes[i].setSalaire(nvSalaire);
@@ -45,9 +45,10 @@ public class GestionEmployes {
     // Méthode pour supprimer un employé par son ID
     public static void supprimerEmploye(int id) {
         for (int i = 0; i < nbEmployes; i++) {
-            if (employes[i].getId() == id) {
+            if (employes[i].getId() == id) { // Recherche de l'employé par ID
+                // Déplace le dernier employé à la position actuelle pour remplir le vide
                 employes[i] = employes[--nbEmployes];
-                employes[nbEmployes] = null;
+                employes[nbEmployes] = null;  // Nettoie la dernière position
                 System.out.println("Employé supprimé avec succès !");
                 return;
             }
@@ -63,31 +64,36 @@ public class GestionEmployes {
     }
 
     public static void rechercherEmploye(String critere) {
-        boolean found = false;
+        boolean found = false; // Indicateur si un employé a été trouvé
         for (int i = 0; i < nbEmployes; i++) {
             if (employes[i].getNom().equalsIgnoreCase(critere) || employes[i].getPoste().equalsIgnoreCase(critere)) {
-                System.out.println(employes[i]);
+                System.out.println(employes[i]); //Affiche les informations de l'employé
                 found = true;
             }
         }
         if (!found) System.out.println("Aucun employé trouvé avec ce critère.");
     }
 
+    //Méthode pour calculer la masse salariale totale
     public static void calculerMasseSalariale() {
-        double totalSalaire = 0;
+        double totalSalaire = 0; // Variable pour stocker la somme des salaires
         for (int i = 0; i < nbEmployes; i++) {
-            totalSalaire += employes[i].getSalaire();
+            totalSalaire += employes[i].getSalaire(); // Ajoute chaque salaire
         }
         System.out.println("Masse salariale totale : " + totalSalaire);
     }
 
+    // Méthode pour trier les employés par salaire (ordre croissant ou décroissant)
     public static void trierEmployesParSalaire(boolean ordreCroissant) {
-        Arrays.sort(employes, 0, nbEmployes, (e1, e2) -> {
-            int compare = Employe.compareParSalaire(e1, e2);
-            return ordreCroissant ? compare : -compare;
+        Arrays.sort(employes, 0, nbEmployes, new java.util.Comparator<Employe>() {
+            public int compare(Employe e1, Employe e2) {
+                int compare = Employe.compareParSalaire(e1, e2); // Comparaison par salaire
+                return ordreCroissant ? compare : -compare; // Ordre selon le choix
+            }
         });
         System.out.println("Employés triés par salaire :");
-        afficherEmployes();
+        afficherEmployes(); // Affiche les employés triés
     }
+
 
 }
